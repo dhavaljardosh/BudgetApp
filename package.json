@@ -8,7 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "@apollo/client": "^3.0.0-beta.50",
+    "@apollo/client": "^2.6.0",
     "expo": "~37.0.3",
     "graphql": "^15.0.0",
     "native-base": "^2.13.12",

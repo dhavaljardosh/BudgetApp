@@ -5,14 +5,14 @@ import {
   ApolloProvider,
   ApolloClient,
   HttpLink,
-  InMemoryCache
+  InMemoryCache,
 } from "@apollo/client";
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
-    uri: "http://localhost:5000/graph"
-  })
+    uri: "http://192.168.1.69:5000/graph",
+  }),
 });
 
 export default function App() {
@@ -28,6 +28,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });

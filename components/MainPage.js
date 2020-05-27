@@ -1,5 +1,5 @@
-import React from "react";
-import { useQuery } from "@apollo/client";
+import React, { useEffect } from "react";
+import { useLazyQuery } from "@apollo/client";
 import { getBalanceSheetQuery } from "../queries/getBalanceSheet";
 import { View, Text, Image, Dimensions, ScrollView } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
@@ -10,7 +10,18 @@ import Expenses from "./Expenses.js";
 import Incomes from "./Incomes.js";
 
 export default () => {
-  const { loading, error, data } = useQuery(getBalanceSheetQuery);
+  const [getBalanceSheet, { called, loading, data }] = useLazyQuery(
+    getBalanceSheetQuery
+  );
+  // const { loading, error, data } = useLazyQuery(getBalanceSheetQuery, {
+  //   pollInterval: 0,
+  // });
+
+  console.log(called, loading, data);
+
+  useEffect(() => {
+    getBalanceSheet();
+  }, []);
 
   return (
     <ScrollView style={{ flex: 1 }}>
@@ -19,7 +30,7 @@ export default () => {
         style={{
           position: "absolute",
           top: -40,
-          width: Dimensions.get("screen").width
+          width: Dimensions.get("screen").width,
         }}
       />
 
@@ -29,7 +40,7 @@ export default () => {
           color: "white",
           marginTop: 50,
           marginLeft: 40,
-          fontWeight: "600"
+          fontWeight: "600",
         }}
       >
         Budget
@@ -43,7 +54,7 @@ export default () => {
         </View>
 
         <View style={style.addButtonRight}>
-          <AddButton />
+          <AddButton refetch={getBalanceSheet} />
 
           {/* <View style={style.addButton}>
             <Text style={{ fontSize: 30, color: "white" }}>+</Text>
@@ -55,20 +66,18 @@ export default () => {
           Recent Transaction
         </Text>
         <View>
-          {new Array(10).fill("0").map((data, index) => {
+          {new Array(4).fill("0").map((data, index) => {
             return <SingleItem key={index} />;
           })}
         </View>
-        <Container>
-          <Tabs>
-            <Tab heading="Expenses">
-              <Expenses />
-            </Tab>
-            <Tab heading="Income">
-              <Incomes />
-            </Tab>
-          </Tabs>
-        </Container>
+        <Tabs>
+          <Tab heading="Expenses">
+            <Expenses />
+          </Tab>
+          <Tab heading="Income">
+            <Incomes />
+          </Tab>
+        </Tabs>
       </View>
     </ScrollView>
   );
@@ -104,10 +113,10 @@ const style = {
     shadowOffset: { width: 0, height: 2 },
     shadowColor: "rgba(0,0,0,0.3)",
     shadowOpacity: 1.0,
-    position: "relative"
+    position: "relative",
   },
   runningTotal: {
-    fontSize: 35
+    fontSize: 35,
   },
   addButton: {
     height: 50,
@@ -117,17 +126,17 @@ const style = {
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#19A1E9",
-    fontSize: 40
+    fontSize: 40,
   },
   addButtonRight: {
     position: "absolute",
     height: "100%",
     paddingVertical: 20,
     right: 20,
-    top: 20,
+    top: 10,
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   shadow: {
     elevation: 4,
@@ -137,13 +146,13 @@ const style = {
     backgroundColor: "white",
     shadowOffset: { width: 0, height: 2 },
     shadowColor: "rgba(0,0,0,0.3)",
-    shadowOpacity: 1.0
+    shadowOpacity: 1.0,
   },
   singleTransaction: {
     padding: 20,
     marginHorizontal: 40,
     marginVertical: 10,
     backgroundColor: "white",
-    flexDirection: "row"
-  }
+    flexDirection: "row",
+  },
 };

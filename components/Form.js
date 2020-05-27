@@ -13,13 +13,22 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useMutation } from "@apollo/client";
+import { addExpenseMutation } from "../queries/addExpense";
 
-export default ({ setModalVisible }) => {
+export default ({ setModalVisible, refetch }) => {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState(0);
   const [type, setType] = useState("");
 
-  const [addExpense, { data }] = useMutation(addExpense({ name }));
+  const [addExpense, { data }] = useMutation(
+    addExpenseMutation({ name, amount, type })
+  );
+
+  const addEntry = () => {
+    addExpense();
+    setModalVisible(false);
+    setTimeout(() => refetch(), 1000);
+  };
 
   return (
     <View>
@@ -97,6 +106,7 @@ export default ({ setModalVisible }) => {
           <Text>Description</Text>
           <TextInput
             placeholder="Add Description here"
+            onChangeText={(text) => setName(text)}
             style={{
               backgroundColor: "white",
               paddingVertical: 10,
@@ -111,6 +121,7 @@ export default ({ setModalVisible }) => {
           <Text>Amount</Text>
           <TextInput
             placeholder="Amount"
+            onChangeText={(text) => setAmount(text)}
             style={{
               backgroundColor: "white",
               paddingVertical: 10,
@@ -132,6 +143,7 @@ export default ({ setModalVisible }) => {
             marginLeft: "auto",
             marginRight: "auto",
           }}
+          onPress={() => addEntry()}
         >
           <Text
             style={{

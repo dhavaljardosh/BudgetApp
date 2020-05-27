@@ -1,10 +1,26 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import Main from "./components";
-// import "./components/style.css";
+import {
+  ApolloProvider,
+  ApolloClient,
+  HttpLink,
+  InMemoryCache
+} from "@apollo/client";
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: new HttpLink({
+    uri: "http://localhost:5000/graph"
+  })
+});
 
 export default function App() {
-  return <Main />;
+  return (
+    <ApolloProvider client={client}>
+      <Main />
+    </ApolloProvider>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -12,6 +28,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center",
-  },
+    justifyContent: "center"
+  }
 });

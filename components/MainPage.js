@@ -1,9 +1,13 @@
 import React from "react";
+import { useQuery } from '@apollo/client';
+import {getBalanceSheetQuery} from "../queries/getBalanceSheet";
 import { View, Text, Image, Dimensions, ScrollView } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import AddButton from "./AddButton";
 
 export default () => {
+  const { loading, error, data } = useQuery(getBalanceSheetQuery);
+  
   return (
     <ScrollView style={{ flex: 1 }}>
       <Image
@@ -30,7 +34,7 @@ export default () => {
       <View style={style.mainCapsule}>
         <View>
           <Text>Total</Text>
-          <Text style={style.runningTotal}>$ 2500</Text>
+          <Text style={style.runningTotal}>{data && data.getBalanceSheet}</Text>
           <Text style={{ color: "red", marginTop: 5 }}>- $250 today</Text>
         </View>
 

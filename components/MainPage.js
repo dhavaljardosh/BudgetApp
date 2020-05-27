@@ -1,13 +1,13 @@
 import React from "react";
-import { useQuery } from '@apollo/client';
-import {getBalanceSheetQuery} from "../queries/getBalanceSheet";
+import { useQuery } from "@apollo/client";
+import { getBalanceSheetQuery } from "../queries/getBalanceSheet";
 import { View, Text, Image, Dimensions, ScrollView } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import AddButton from "./AddButton";
 
 export default () => {
   const { loading, error, data } = useQuery(getBalanceSheetQuery);
-  
+
   return (
     <ScrollView style={{ flex: 1 }}>
       <Image
@@ -47,8 +47,8 @@ export default () => {
         </View>
       </View>
       <View>
-        <Text style={{ marginLeft: 40, marginTop: 10, fontSize: 18 }}>
-          Transaction
+        <Text style={{ marginLeft: 40, marginTop: 20, fontSize: 18 }}>
+          Recent Transaction
         </Text>
         <View>
           {new Array(10).fill("0").map((data, index) => {
@@ -80,7 +80,7 @@ const SingleItem = () => {
 
 const style = {
   mainCapsule: {
-    elevate: 4,
+    elevation: 4,
     borderRadius: 30,
     paddingVertical: 20,
     paddingHorizontal: 20,
@@ -116,7 +116,7 @@ const style = {
     alignItems: "center",
   },
   shadow: {
-    elevate: 4,
+    elevation: 4,
     borderRadius: 20,
     paddingVertical: 20,
     paddingHorizontal: 20,

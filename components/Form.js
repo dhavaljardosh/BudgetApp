@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Alert,
   Modal,
@@ -12,7 +12,15 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import { useMutation } from "@apollo/client";
+
 export default ({ setModalVisible }) => {
+  const [name, setName] = useState("");
+  const [amount, setAmount] = useState(0);
+  const [type, setType] = useState("");
+
+  const [addExpense, { data }] = useMutation(addExpense({ name }));
+
   return (
     <View>
       <Image
@@ -24,31 +32,62 @@ export default ({ setModalVisible }) => {
         }}
       />
 
-      <Text
-        style={{
-          fontSize: 40,
-          color: "white",
-          marginTop: 50,
-          marginLeft: 40,
-          fontWeight: "600",
-        }}
-      >
-        Add Entry
-      </Text>
-      <Button
-        onPress={() => setModalVisible(false)}
-        title="Close"
-        color="white"
-      />
+      <View style={{ flexDirection: "row" }}>
+        <Text
+          style={{
+            fontSize: 25,
+            color: "white",
+            marginTop: 50,
+            marginLeft: 40,
+            fontWeight: "600",
+          }}
+        >
+          Add Entry
+        </Text>
+        <View style={{ flex: 1, marginRight: 40 }}>
+          <TouchableOpacity onPress={() => setModalVisible(false)}>
+            <View style={{ color: "white", marginTop: 50, marginLeft: "auto" }}>
+              <Text style={{ fontSize: 20, color: "white" }}>Back</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
 
       <View style={style.mainCapsule}>
         <View>
           <Text>Type</Text>
-          <View style={{ flexDirection: "row" }}>
-            <View style={Object.assign({ flex: 1 }, { ...style.center })}>
+          <View
+            style={{
+              flexDirection: "row",
+              borderWidth: 2,
+              borderColor: "#19A1E9",
+              borderRadius: 20,
+              overflow: "hidden",
+              marginTop: 5,
+            }}
+          >
+            <View
+              style={Object.assign(
+                {
+                  flex: 1,
+                  borderTopLeftRadius: 16,
+                  borderBottomLeftRadius: 16,
+                },
+                { ...style.center }
+              )}
+            >
               <Text>Income</Text>
             </View>
-            <View style={Object.assign({ flex: 1 }, { ...style.center })}>
+            <View
+              style={Object.assign(
+                {
+                  flex: 1,
+                  borderTopRightRadius: 16,
+                  borderBottomRightRadius: 16,
+                },
+                { ...style.center }
+              )}
+            >
               <Text>Expense</Text>
             </View>
           </View>
@@ -57,12 +96,13 @@ export default ({ setModalVisible }) => {
         <View style={{ marginTop: 10 }}>
           <Text>Description</Text>
           <TextInput
+            placeholder="Add Description here"
             style={{
-              backgroundColor: "lightgray",
-              borderRadius: 5,
+              backgroundColor: "white",
               paddingVertical: 10,
-              paddingHorizontal: 10,
-              fontSize: 18,
+              borderBottomWidth: 2,
+              borderBottomColor: "#1C9CE7",
+              fontSize: 16,
             }}
           />
         </View>
@@ -70,12 +110,13 @@ export default ({ setModalVisible }) => {
         <View style={{ marginTop: 10 }}>
           <Text>Amount</Text>
           <TextInput
+            placeholder="Amount"
             style={{
-              backgroundColor: "lightgray",
-              borderRadius: 5,
+              backgroundColor: "white",
               paddingVertical: 10,
-              paddingHorizontal: 10,
-              fontSize: 18,
+              borderBottomWidth: 2,
+              borderBottomColor: "#1C9CE7",
+              fontSize: 16,
             }}
           />
         </View>
@@ -112,7 +153,7 @@ export default ({ setModalVisible }) => {
 
 const style = {
   mainCapsule: {
-    elevate: 4,
+    elevation: 4,
     borderRadius: 30,
     paddingVertical: 20,
     paddingHorizontal: 20,
@@ -168,7 +209,7 @@ const style = {
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
-    backgroundColor: "lightgray",
-    marginTop: 5,
+    backgroundColor: "#19A1E9",
+    // marginTop: 5,
   },
 };

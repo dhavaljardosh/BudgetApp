@@ -4,6 +4,10 @@ import { getBalanceSheetQuery } from "../queries/getBalanceSheet";
 import { View, Text, Image, Dimensions, ScrollView } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import AddButton from "./AddButton";
+import { Container, Header, Content, Tab, Tabs } from "native-base";
+
+import Expenses from "./Expenses.js";
+import Incomes from "./Incomes.js";
 
 export default () => {
   const { loading, error, data } = useQuery(getBalanceSheetQuery);
@@ -15,7 +19,7 @@ export default () => {
         style={{
           position: "absolute",
           top: -40,
-          width: Dimensions.get("screen").width,
+          width: Dimensions.get("screen").width
         }}
       />
 
@@ -25,7 +29,7 @@ export default () => {
           color: "white",
           marginTop: 50,
           marginLeft: 40,
-          fontWeight: "600",
+          fontWeight: "600"
         }}
       >
         Budget
@@ -55,6 +59,16 @@ export default () => {
             return <SingleItem key={index} />;
           })}
         </View>
+        <Container>
+          <Tabs>
+            <Tab heading="Expenses">
+              <Expenses />
+            </Tab>
+            <Tab heading="Income">
+              <Incomes />
+            </Tab>
+          </Tabs>
+        </Container>
       </View>
     </ScrollView>
   );
@@ -90,10 +104,10 @@ const style = {
     shadowOffset: { width: 0, height: 2 },
     shadowColor: "rgba(0,0,0,0.3)",
     shadowOpacity: 1.0,
-    position: "relative",
+    position: "relative"
   },
   runningTotal: {
-    fontSize: 35,
+    fontSize: 35
   },
   addButton: {
     height: 50,
@@ -103,7 +117,7 @@ const style = {
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#19A1E9",
-    fontSize: 40,
+    fontSize: 40
   },
   addButtonRight: {
     position: "absolute",
@@ -113,7 +127,7 @@ const style = {
     top: 20,
     display: "flex",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   shadow: {
     elevation: 4,
@@ -123,13 +137,13 @@ const style = {
     backgroundColor: "white",
     shadowOffset: { width: 0, height: 2 },
     shadowColor: "rgba(0,0,0,0.3)",
-    shadowOpacity: 1.0,
+    shadowOpacity: 1.0
   },
   singleTransaction: {
     padding: 20,
     marginHorizontal: 40,
     marginVertical: 10,
     backgroundColor: "white",
-    flexDirection: "row",
-  },
+    flexDirection: "row"
+  }
 };

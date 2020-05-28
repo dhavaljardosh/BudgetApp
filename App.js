@@ -11,7 +11,7 @@ import {
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
-    uri: "http://192.168.1.69:5000/graph",
+    uri: "http://172.20.0.78:5000/graph",
   }),
 });
 

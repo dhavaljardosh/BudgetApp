@@ -15,7 +15,7 @@ import {
 import { useMutation } from "@apollo/client";
 import { addExpenseMutation } from "../queries/addExpense";
 
-export default ({ setModalVisible, refetch }) => {
+export default ({ setModalVisible }) => {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState(0);
   const [type, setType] = useState("");
@@ -27,7 +27,7 @@ export default ({ setModalVisible, refetch }) => {
   const addEntry = () => {
     addExpense();
     setModalVisible(false);
-    setTimeout(() => refetch(), 1000);
+    // setTimeout(() => refetch(), 1000);
   };
 
   return (

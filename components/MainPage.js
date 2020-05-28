@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
-import { useLazyQuery } from "@apollo/client";
+import React, { useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
 import { getBalanceSheetQuery } from "../queries/getBalanceSheet";
-import { View, Text, Image, Dimensions, ScrollView } from "react-native";
+import { ActivityIndicator, View, Text, Image, Dimensions, ScrollView } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import AddButton from "./AddButton";
 import { Container, Header, Content, Tab, Tabs } from "native-base";
@@ -9,19 +9,15 @@ import { Container, Header, Content, Tab, Tabs } from "native-base";
 import Expenses from "./Expenses.js";
 import Incomes from "./Incomes.js";
 
-export default () => {
-  const [getBalanceSheet, { called, loading, data }] = useLazyQuery(
-    getBalanceSheetQuery
-  );
-  // const { loading, error, data } = useLazyQuery(getBalanceSheetQuery, {
-  //   pollInterval: 0,
-  // });
-
-  console.log(called, loading, data);
+const MainPage = () => {
+  const { loading, error, data } = useQuery(getBalanceSheetQuery);
+  const [balanceSheet, setBalanceSheet] = useState("");
 
   useEffect(() => {
-    getBalanceSheet();
-  }, []);
+    if (data) {
+      setBalanceSheet(data.getBalanceSheet);
+    }
+  }, [loading, error, data]);
 
   return (
     <ScrollView style={{ flex: 1 }}>
@@ -30,7 +26,7 @@ export default () => {
         style={{
           position: "absolute",
           top: -40,
-          width: Dimensions.get("screen").width,
+          width: Dimensions.get("screen").width
         }}
       />
 
@@ -40,7 +36,7 @@ export default () => {
           color: "white",
           marginTop: 50,
           marginLeft: 40,
-          fontWeight: "600",
+          fontWeight: "600"
         }}
       >
         Budget
@@ -48,13 +44,19 @@ export default () => {
 
       <View style={style.mainCapsule}>
         <View>
-          <Text>Total</Text>
-          <Text style={style.runningTotal}>{data && data.getBalanceSheet}</Text>
-          <Text style={{ color: "red", marginTop: 5 }}>- $250 today</Text>
+          {loading ? (
+            <ActivityIndicator />
+          ) : (
+            <View>
+              <Text>Total</Text>
+              <Text style={style.runningTotal}>{balanceSheet}</Text>
+              <Text style={{ color: "red", marginTop: 5 }}>- $250 today</Text>
+            </View>
+          )}
         </View>
 
         <View style={style.addButtonRight}>
-          <AddButton refetch={getBalanceSheet} />
+          <AddButton />
 
           {/* <View style={style.addButton}>
             <Text style={{ fontSize: 30, color: "white" }}>+</Text>
@@ -66,7 +68,7 @@ export default () => {
           Recent Transaction
         </Text>
         <View>
-          {new Array(4).fill("0").map((data, index) => {
+          {new Array(2).fill("0").map((data, index) => {
             return <SingleItem key={index} />;
           })}
         </View>
@@ -101,6 +103,8 @@ const SingleItem = () => {
   );
 };
 
+export default MainPage;
+
 const style = {
   mainCapsule: {
     elevation: 4,
@@ -113,10 +117,10 @@ const style = {
     shadowOffset: { width: 0, height: 2 },
     shadowColor: "rgba(0,0,0,0.3)",
     shadowOpacity: 1.0,
-    position: "relative",
+    position: "relative"
   },
   runningTotal: {
-    fontSize: 35,
+    fontSize: 35
   },
   addButton: {
     height: 50,
@@ -126,7 +130,7 @@ const style = {
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#19A1E9",
-    fontSize: 40,
+    fontSize: 40
   },
   addButtonRight: {
     position: "absolute",
@@ -136,7 +140,7 @@ const style = {
     top: 10,
     display: "flex",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   shadow: {
     elevation: 4,
@@ -146,13 +150,13 @@ const style = {
     backgroundColor: "white",
     shadowOffset: { width: 0, height: 2 },
     shadowColor: "rgba(0,0,0,0.3)",
-    shadowOpacity: 1.0,
+    shadowOpacity: 1.0
   },
   singleTransaction: {
     padding: 20,
     marginHorizontal: 40,
     marginVertical: 10,
     backgroundColor: "white",
-    flexDirection: "row",
-  },
+    flexDirection: "row"
+  }
 };

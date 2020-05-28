@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import Form from "./Form";
 
-const App = ({ refetch }) => {
+const App = () => {
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <View style={styles.centeredView}>
@@ -24,7 +24,7 @@ const App = ({ refetch }) => {
           Alert.alert("Modal has been closed.");
         }}
       >
-        <Form setModalVisible={setModalVisible} refetch={refetch} />
+        <Form setModalVisible={setModalVisible} />
       </Modal>
 
       <TouchableHighlight

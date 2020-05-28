@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
-import { View} from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import {
   Card,
   CardItem,
@@ -11,22 +11,21 @@ import {
 import { getAllExpenses } from "../queries/getAllExpenses";
 
 const Expenses = () => {
-  const [expenses, setExpenses] = useState([{id: 1, name: "Rakesh", type: "human", amount: "1"}]);
+  const [expenses, setExpenses] = useState([]);
   const { loading, error, data } = useQuery(getAllExpenses);
   useEffect(() => {
     if (data) {
       setExpenses(data.getAllExpenses);
     }
-  }, [data]);
+    console.log("loading from expenses : " + loading)
+  }, [loading, error, data]);
 
   if (loading) {
-    return <Text>Loading..</Text>;
+    return <ActivityIndicator />;
   }
   if (error) {
     return <Text>{error.message}</Text>;
   }
-
-
 
   return (
     <View>

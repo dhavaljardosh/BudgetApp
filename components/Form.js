@@ -14,11 +14,12 @@ import {
 } from "react-native";
 import { useMutation } from "@apollo/client";
 import { addExpenseMutation } from "../queries/addExpense";
+import { Container, Header, Content, Picker, Form } from "native-base";
 
 export default ({ setModalVisible }) => {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState(0);
-  const [type, setType] = useState("");
+  const [type, setType] = useState("service");
 
   const [addExpense, { data }] = useMutation(
     addExpenseMutation({ name, amount, type })
@@ -29,6 +30,10 @@ export default ({ setModalVisible }) => {
     setModalVisible(false);
     // setTimeout(() => refetch(), 1000);
   };
+
+  const onValueChange = (value) => {
+    setType(value);
+  }
 
   return (
     <View>
@@ -103,9 +108,8 @@ export default ({ setModalVisible }) => {
         </View>
 
         <View style={{ marginTop: 10 }}>
-          <Text>Description</Text>
           <TextInput
-            placeholder="Add Description here"
+            placeholder="Add Name here"
             onChangeText={(text) => setName(text)}
             style={{
               backgroundColor: "white",
@@ -118,7 +122,6 @@ export default ({ setModalVisible }) => {
         </View>
 
         <View style={{ marginTop: 10 }}>
-          <Text>Amount</Text>
           <TextInput
             placeholder="Amount"
             onChangeText={(text) => setAmount(text)}
@@ -130,6 +133,22 @@ export default ({ setModalVisible }) => {
               fontSize: 16,
             }}
           />
+        </View>
+        <View style={{ marginTop: 10, width: 100 }}>
+          <Form>
+            <Picker
+              note
+              mode="dropdown"
+              style={{ width: 120 }}
+              selectedValue={type}
+              onValueChange={(value) => onValueChange(value)}
+            >
+              <Picker.Item label="Service" value="service" />
+              <Picker.Item label="Supermarket" value="supermarket" />
+              <Picker.Item label="Utilities" value="utilities" />
+              <Picker.Item label="Other" value="other" />
+            </Picker>
+          </Form>
         </View>
         <TouchableOpacity
           style={{

@@ -17,7 +17,6 @@ const Expenses = () => {
     if (data) {
       setExpenses(data.getAllExpenses);
     }
-    console.log("loading from expenses : " + loading)
   }, [loading, error, data]);
 
   if (loading) {
